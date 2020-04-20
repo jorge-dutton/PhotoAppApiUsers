@@ -1,19 +1,10 @@
 package com.jdutton.photoapp.api.users.ui.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity
 public class CreateUserRequestModel {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long ui;
     
     @NotNull(message="First name is mandatory")
     @Size(min=2, message="First name must be longer than one char")
@@ -25,7 +16,7 @@ public class CreateUserRequestModel {
     
     @NotNull(message="Password is mandatory")
     @Size(min=8, max=16, message="Password must be beteewen 9 and 16 chars")
-    private String passsword;
+    private String password;
     
     @NotNull(message="Email is mandatory")
     @Email
@@ -35,20 +26,12 @@ public class CreateUserRequestModel {
 
     }
 
-    public CreateUserRequestModel(String firstName, String lastName, String passsword, String email) {
+    public CreateUserRequestModel(String firstName, String lastName, String password, String email) {
 	super();
 	this.firstName = firstName;
 	this.lastName = lastName;
-	this.passsword = passsword;
+	this.password = password;
 	this.email = email;
-    }
-
-    public Long getUi() {
-	return ui;
-    }
-
-    public void setUi(Long ui) {
-	this.ui = ui;
     }
 
     public String getFirstName() {
@@ -67,12 +50,12 @@ public class CreateUserRequestModel {
 	this.lastName = lastName;
     }
 
-    public String getPasssword() {
-	return passsword;
+    public String getPassword() {
+	return password;
     }
 
-    public void setPasssword(String passsword) {
-	this.passsword = passsword;
+    public void setPassword(String password) {
+	this.password = password;
     }
 
     public String getEmail() {
