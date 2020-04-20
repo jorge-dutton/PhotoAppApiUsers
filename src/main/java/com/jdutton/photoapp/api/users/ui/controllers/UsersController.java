@@ -5,6 +5,8 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jdutton.photoapp.api.users.service.UsersService;
 import com.jdutton.photoapp.api.users.shared.UserDto;
 import com.jdutton.photoapp.api.users.ui.model.CreateUserRequestModel;
+import com.jdutton.photoapp.api.users.ui.model.CreateUserResponseModel;
 
 @RestController
 @RequestMapping("/users")
@@ -35,13 +38,14 @@ public class UsersController {
     }
 
     @PostMapping
-    public String createUser(@Valid @RequestBody final CreateUserRequestModel userDetails) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody final CreateUserRequestModel userDetails) {
 	ModelMapper modelMapper = new ModelMapper();
 	modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 	
-	UserDto userDto = modelMapper.map(userDetails, UserDto.class);
-	usersService.createUser(userDto);
+	UserDto userResponseDto = usersService.createUser(modelMapper.map(userDetails, UserDto.class));
 	
-	return "Create user called!";
+	CreateUserResponseModel createUserResponseModel = modelMapper.map(userResponseDto, CreateUserResponseModel.class);
+	
+	return ResponseEntity.status(HttpStatus.CREATED).body(createUserResponseModel);
     }
 }
