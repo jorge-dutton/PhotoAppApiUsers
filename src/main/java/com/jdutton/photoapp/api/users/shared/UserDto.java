@@ -9,7 +9,7 @@ public class UserDto implements Serializable {
     private String userId; //Is insecure to use autoincremente ID so we use alphanumeric
     private String firstName;
     private String lastName;
-    private String passsword;
+    private String password;
     private String email;
     private String encryptedPassword;
     
@@ -31,11 +31,11 @@ public class UserDto implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public String getPasssword() {
-        return passsword;
+    public String getPassword() {
+        return password;
     }
-    public void setPasssword(String passsword) {
-        this.passsword = passsword;
+    public void setPassword(String password) {
+        this.password = password;
     }
     public String getEmail() {
         return email;

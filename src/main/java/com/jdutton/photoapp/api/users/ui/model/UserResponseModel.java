@@ -3,18 +3,18 @@ package com.jdutton.photoapp.api.users.ui.model;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class CreateUserResponseModel {
+public class UserResponseModel {
     
     private String userId; 
     private String firstName;
     private String lastName;
     private String email;
 
-    public CreateUserResponseModel() {
+    public UserResponseModel() {
 
     }
 
-    public CreateUserResponseModel(String userId, String firstName, String lastName, String email) {
+    public UserResponseModel(String userId, String firstName, String lastName, String email) {
 	super();
 	this.userId = userId;
 	this.firstName = firstName;
