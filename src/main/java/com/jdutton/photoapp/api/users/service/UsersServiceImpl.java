@@ -29,10 +29,21 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public UserDto getUserByUserId(final String userId) {
+	public UserDto getUserDetailsByEmail(final String email) {
+		UserEntity userEntity = usersRepository.findByEmail(email);
+		if (userEntity == null) {
+			throw new UsernameNotFoundException(email);
+		}
+		return new ModelMapper().map(userEntity, UserDto.class);
+	}
+
+	@Override
+	public UserDto getUserDetailsByUserId(final String userId) {
 		UserEntity userEntity = usersRepository.findByUserId(userId);
-		final ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(userEntity, UserDto.class);
+		if (userEntity == null) {
+			throw new UsernameNotFoundException(userId);
+		}
+		return new ModelMapper().map(userEntity, UserDto.class);
 	}
 
 	@Override
