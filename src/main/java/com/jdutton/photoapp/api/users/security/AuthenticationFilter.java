@@ -3,6 +3,8 @@ package com.jdutton.photoapp.api.users.security;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +20,7 @@ import com.jdutton.photoapp.api.users.ui.model.UserLoginRequestModel;
 //@EnableWebSecurity
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+    public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response)
 	    throws AuthenticationException {
 	try {
 	    UserLoginRequestModel credentials = new ObjectMapper().readValue(request.getInputStream(),
@@ -30,5 +32,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	} catch (IOException e) {
 	    throw new RuntimeException(e);
 	}
+    }
+
+    @Override
+    public void successfulAuthentication(final HttpServletRequest request, final HttpServletResponse response,
+	    final FilterChain chain, final Authentication auth) throws IOException, ServletException {
+
     }
 }
