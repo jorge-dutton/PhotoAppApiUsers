@@ -24,6 +24,7 @@ import com.jdutton.photoapp.api.users.ui.model.UserLoginRequestModel;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.TextCodec;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -69,8 +70,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		final String token = Jwts.builder().setSubject(userDetails.getUserId())
 				.setExpiration(new Date(System.currentTimeMillis() + Long
 						.parseLong(env.getProperty("token.expiration.time"))))
-				.signWith(SignatureAlgorithm.HS512,
-						env.getProperty("token.secret"))
+				.signWith(SignatureAlgorithm.HS256,
+						TextCodec.BASE64
+								.decode(env.getProperty("token.secret")))
 				.compact();
 		response.addHeader("token", token);
 		response.addHeader("userId", userDetails.getUserId());
