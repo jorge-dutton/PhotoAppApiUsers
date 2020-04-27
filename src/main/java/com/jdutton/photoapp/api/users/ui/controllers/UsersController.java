@@ -39,7 +39,8 @@ public class UsersController {
 
 	@GetMapping("/status/check")
 	public String status() {
-		return "Working! port: " + env.getProperty("local.server.port");
+		return "Working! port: " + env.getProperty("local.server.port")
+				+ " with secret: " + env.getProperty("token.secret");
 	}
 
 	@GetMapping(value = "/{userId}", produces = {
