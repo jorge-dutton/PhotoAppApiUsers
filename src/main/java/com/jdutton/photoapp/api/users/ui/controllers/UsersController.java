@@ -44,9 +44,9 @@ public class UsersController {
 	}
 
 	@GetMapping(value = "/{userId}", produces = {
-			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<UserResponseModel> getUser(
-			@PathVariable final String userId) {
+			@PathVariable("userId") final String userId) {
 		final UserDto user = usersService.getUserDetailsByUserId(userId);
 
 		return ResponseEntity.status(HttpStatus.FOUND)
