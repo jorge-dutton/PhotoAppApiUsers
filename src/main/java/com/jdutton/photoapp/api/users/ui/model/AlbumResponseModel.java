@@ -1,15 +1,16 @@
 package com.jdutton.photoapp.api.users.ui.model;
 
 public class AlbumResponseModel {
-	private String ambumId;
+	private String albumId;
 	private String userId;
 	private String name;
 	private String description;
-	public String getAmbumId() {
-		return ambumId;
+
+	public String getAlbumId() {
+		return albumId;
 	}
-	public void setAmbumId(String ambumId) {
-		this.ambumId = ambumId;
+	public void setAlbumId(String albumId) {
+		this.albumId = albumId;
 	}
 	public String getUserId() {
 		return userId;

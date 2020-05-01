@@ -6,17 +6,16 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.core.ParameterizedTypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import com.jdutton.photoapp.api.users.data.AlbumServiceClient;
 import com.jdutton.photoapp.api.users.data.UserEntity;
 import com.jdutton.photoapp.api.users.data.UsersRepository;
 import com.jdutton.photoapp.api.users.shared.UserDto;
@@ -27,16 +26,24 @@ public class UsersServiceImpl implements UsersService {
 
 	private final UsersRepository usersRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	private final RestTemplate restTemplate;
+	// private final RestTemplate restTemplate; // For using with RestTemplate
+	private final AlbumServiceClient albumServiceClient; // To be used with
+															// Feign HTTP
+															// service client
 	private final Environment env;
+
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public UsersServiceImpl(final UsersRepository usersRepository,
 			final BCryptPasswordEncoder bCryptPasswordEncoder,
-			final RestTemplate restTemplate, final Environment env) {
+			// final RestTemplate restTemplate,
+			final AlbumServiceClient albumServiceClient,
+			final Environment env) {
 		super();
 		this.usersRepository = usersRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-		this.restTemplate = restTemplate;
+		// this.restTemplate = restTemplate;
+		this.albumServiceClient = albumServiceClient;
 		this.env = env;
 	}
 
@@ -61,11 +68,15 @@ public class UsersServiceImpl implements UsersService {
 		final String albumsUrl = String.format(env.getProperty("albums.url"),
 				userId);
 
-		ResponseEntity<List<AlbumResponseModel>> albumsListResponse = restTemplate
-				.exchange(albumsUrl, HttpMethod.GET, null,
-						new ParameterizedTypeReference<List<AlbumResponseModel>>() {
-						});
-		List<AlbumResponseModel> albumsList = albumsListResponse.getBody();
+		// To be used with Feign HTTP Service Client
+		// ResponseEntity<List<AlbumResponseModel>> albumsListResponse =
+		// restTemplate
+		// .exchange(albumsUrl, HttpMethod.GET, null,
+		// new ParameterizedTypeReference<List<AlbumResponseModel>>() {
+		// });
+		// List<AlbumResponseModel> albumsList = albumsListResponse.getBody();
+		List<AlbumResponseModel> albumsList = albumServiceClient
+				.getAlbums(userId);
 
 		userDto.setAlbums(albumsList);
 
